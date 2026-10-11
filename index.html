@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Absen Musyrif</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<meta name="description" content="Aplikasi absensi santri untuk musyrif: shalat, makan, keterlambatan, dan kegiatan wajib pondok.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Absen Musyrif">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);--bg:#f3f6f5;--card:#fff;--ink:#12201d;--mut:#667873;--line:#dde6e3;--pri:#0f766e;--prit:#fff;--H:#16a34a;--T:#d97706;--I:#2563eb;--S:#9333ea;--A:#dc2626}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1514;--card:#17211f;--ink:#e8f1ee;--mut:#8fa59f;--line:#26342f;--pri:#2dd4bf;--prit:#042f2a}}
+:root[data-theme="dark"]{--bg:#0e1514;--card:#17211f;--ink:#e8f1ee;--mut:#8fa59f;--line:#26342f;--pri:#2dd4bf;--prit:#042f2a}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+#app{max-width:640px;margin:0 auto;padding:12px}
+h1{font-size:18px;margin:4px 0 10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.row{display:flex;gap:8px;align-items:center}.sp{justify-content:space-between}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:9px 14px;font:inherit;font-weight:600}
+.chip.on{background:var(--pri);color:var(--prit);border-color:var(--pri)}
+.chip small{display:block;font-weight:400;opacity:.75;font-size:11px}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;width:100%}
+button{font:inherit;cursor:pointer}
+.btn{background:var(--pri);color:var(--prit);border:0;border-radius:10px;padding:11px 14px;font-weight:700}
+.btn.o{background:transparent;color:var(--pri);border:1px solid var(--pri)}
+.ic{background:var(--card);border:1px solid var(--line);border-radius:10px;width:44px;height:44px;color:var(--ink);font-size:18px}
+.sum{display:flex;gap:6px;margin:6px 0 10px}
+.sum div{flex:1;text-align:center;border-radius:10px;padding:6px 0;background:var(--card);border:1px solid var(--line);font-size:12px;color:var(--mut)}
+.sum b{display:block;font-size:18px;color:var(--ink)}
+.name{font-weight:700}.mut{color:var(--mut);font-size:12px}
+.st{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px}
+.st button{border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:11px 0;font-weight:700;font-size:13px}
+.st button.on{color:#fff;border-color:transparent}
+.st button.on[data-s=H]{background:var(--H)}.st button.on[data-s=T]{background:var(--T)}.st button.on[data-s=I]{background:var(--I)}.st button.on[data-s=S]{background:var(--S)}.st button.on[data-s=A]{background:var(--A)}
+.extra{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.extra input{flex:1;min-width:120px}.mn{padding:7px 11px;border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--ink)}.mn.on{background:var(--T);color:#fff;border-color:var(--T)}
+.bar{height:6px;background:var(--line);border-radius:9px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--pri)}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;background:none;border:0;padding:10px 0;color:var(--mut);font-size:12px;font-weight:600}nav button.on{color:var(--pri)}nav span{display:block;font-size:20px}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--line)}th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:var(--card)}
+.nm{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--ink);text-align:left;text-decoration:underline dotted var(--mut);text-underline-offset:3px}
+.fl{display:inline-block;margin:4px 4px 0 0;padding:2px 8px;border-radius:999px;background:rgba(217,119,6,.16);color:var(--T);font-size:12px;font-weight:700}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:999px;font-size:13px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<nav>
+<button data-a="tab" data-v="absen"><span>✅</span>Absen</button>
+<button data-a="tab" data-v="rekap"><span>📊</span>Rekap</button>
+<button data-a="tab" data-v="santri"><span>👥</span>Santri</button>
+<button data-a="tab" data-v="kon"><span>💬</span>Konseling</button>
+<button data-a="tab" data-v="pengurus" id="nadm" style="display:none"><span>📋</span>Laporan</button>
+</nav>
+<script src="vendor/supabase.js"></script>
+<script src="config.js"></script>
+<script>
+const SL=[
+{id:'tahajud',l:'Tahajud',g:'Shalat',t:3.5},{id:'subuh',l:'Subuh',g:'Shalat',t:4.5},{id:'dhuha',l:'Dhuha',g:'Shalat',t:7},{id:'dzuhur',l:'Dzuhur',g:'Shalat',t:12},{id:'ashar',l:'Ashar',g:'Shalat',t:15.25},{id:'maghrib',l:'Maghrib',g:'Shalat',t:18},{id:'isya',l:'Isya',g:'Shalat',t:19},
+{id:'mpagi',l:'Makan Pagi',g:'Makan',t:6},{id:'msiang',l:'Makan Siang',g:'Makan',t:12.5},{id:'mmalam',l:'Makan Malam',g:'Makan',t:18.5},
+{id:'tahfidz',l:'Tahfidz',g:'Kegiatan',t:5.25},{id:'kerja',l:'Kerja Bakti',g:'Kegiatan',t:7.5},{id:'olah',l:'Olahraga',g:'Kegiatan',t:16},{id:'muha',l:'Muhadharah',g:'Kegiatan',t:20},{id:'belajar',l:'Belajar Malam',g:'Kegiatan',t:20.5}];
+const GR=['Shalat','Makan','Kegiatan'];
+const ST=[['H','Hadir'],['T','Telat'],['I','Izin'],['S','Sakit'],['A','Alpa']];
+let db={santri:[],rec:{},kon:[]};
+let sb=null,cdb=false,me=null,role='',myName='',isAdm=false,isOwn=false,isPim=false,canW=true,view=null,vname='',mine=null,tm,loadedFrom='',pushing=false,again=false,last={s:{},r:{},k:{}};
+const WIN=62,CFG=window.APP_CONFIG||{};
+const ro=()=>!!view||isAdm;
+const flatS=()=>{const o={};db.santri.forEach(s=>o[s.id]=JSON.stringify([s.name,s.room||'']));return o};
+const flatR=(rec=db.rec)=>{const ok=new Set(db.santri.map(s=>s.id)),o={};for(const k in rec){const[d,sl]=k.split('|');for(const id in rec[k]){if(!ok.has(id))continue;const x=rec[k][id];o[d+'|'+sl+'|'+id]=JSON.stringify([x.s,x.m||0,x.n||''])}}return o};
+const flatK=()=>{const ok=new Set(db.santri.map(s=>s.id)),o={};(db.kon||[]).forEach(k=>{if(ok.has(k.sid))o[k.id]=JSON.stringify([k.sid,k.tgl,k.topik,k.cat,k.tl||'',k.tld||'',k.st,!!k.esk])});return o};
+const save=()=>{if(ro())return;clearTimeout(tm);tm=setTimeout(push,500)};
+const chk=r=>{if(r.error)throw r.error};
+async function push(){if(ro()||!sb)return;if(pushing){again=true;return}pushing=true;clearTimeout(tm);
+try{const cs=flatS(),cr=flatR(),ck=flatK();
+const up=db.santri.filter(s=>cs[s.id]!==last.s[s.id]).map(s=>({id:s.id,musyrif_id:me,nama:s.name,kamar:s.room||''}));
+if(up.length)chk(await sb.from('santri').upsert(up));
+const gone=new Set(Object.keys(last.s).filter(id=>!(id in cs)));
+if(gone.size)chk(await sb.from('santri').delete().in('id',[...gone]));
+const ur=[];for(const k in cr)if(cr[k]!==last.r[k]){const[tg,sl,id]=k.split('|'),[s,m,n]=JSON.parse(cr[k]);ur.push({santri_id:id,musyrif_id:me,tanggal:tg,slot:sl,status:s,menit:m,catatan:n})}
+for(let i=0;i<ur.length;i+=500)chk(await sb.from('absensi').upsert(ur.slice(i,i+500),{onConflict:'santri_id,tanggal,slot'}));
+const dg={};for(const k in last.r)if(!(k in cr)){const[tg,sl,id]=k.split('|');if(gone.has(id))continue;(dg[tg+'|'+sl]=dg[tg+'|'+sl]||[]).push(id)}
+for(const g in dg){const[tg,sl]=g.split('|');for(let i=0;i<dg[g].length;i+=100)chk(await sb.from('absensi').delete().eq('tanggal',tg).eq('slot',sl).in('santri_id',dg[g].slice(i,i+100)))}
+const uk=(db.kon||[]).filter(k=>ck[k.id]&&ck[k.id]!==last.k[k.id]).map(k=>({id:k.id,santri_id:k.sid,musyrif_id:me,tanggal:k.tgl,topik:k.topik,catatan:k.cat,tindak_lanjut:k.tl||null,tanggal_tl:k.tld||null,status:k.st,eskalasi:!!k.esk}));
+if(uk.length)chk(await sb.from('konseling').upsert(uk));
+const dk=Object.keys(last.k).filter(id=>!(id in ck));
+if(dk.length)chk(await sb.from('konseling').delete().in('id',dk));
+last={s:cs,r:cr,k:ck}}catch(e){toast('Gagal menyimpan: '+(e.message||'cek koneksi'))}
+finally{pushing=false;if(again){again=false;push()}}}
+window.addEventListener('online',()=>push());
+const pad=n=>String(n).padStart(2,'0');
+const ds=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const addD=(s,n)=>{const d=new Date(s+'T00:00');d.setDate(d.getDate()+n);return ds(d)};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmtD=s=>new Date(s+'T00:00').toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+const now=new Date(),hr=now.getHours()+now.getMinutes()/60;
+const autoSlot=()=>{const a=SL.filter(x=>x.g==='Shalat'&&x.t<=hr);return a.length?a[a.length-1].id:'subuh'};
+const ui={tab:'absen',date:ds(now),grp:'Shalat',slot:autoSlot(),room:'',from:addD(ds(now),-6),to:ds(now),rg:'Shalat'};
+const rooms=()=>[...new Set(db.santri.map(s=>s.room).filter(Boolean))].sort();
+ui.room=rooms()[0]||'';ui.rrm='';
+const key=()=>ui.date+'|'+ui.slot;
+const recs=()=>db.rec[key()]||(db.rec[key()]={});
+const list=()=>db.santri.filter(s=>!ui.room||s.room===ui.room);
+let toastT;const toast=m=>{document.querySelectorAll('.toast').forEach(e=>e.remove());const e=document.createElement('div');e.className='toast';e.textContent=m;document.body.appendChild(e);clearTimeout(toastT);toastT=setTimeout(()=>e.remove(),1800)};
+
+function absen(){
+const r=recs(),L=list(),slots=SL.filter(x=>x.g===ui.grp),FW=agg(addD(ds(now),-6),ds(now));
+const c={H:0,T:0,I:0,S:0,A:0};let f=0;L.forEach(s=>{const x=r[s.id];if(x){c[x.s]++;f++}});
+return `<h1>Absen Musyrif</h1>
+<div class="card"><div class="row"><button class="ic" data-a="dd" data-v="-1">‹</button><input type="date" id="dt" value="${ui.date}"><button class="ic" data-a="dd" data-v="1">›</button></div>
+<div class="mut" style="margin-top:6px;text-align:center">${fmtD(ui.date)}</div></div>
+<div class="chips">${GR.map(g=>`<button class="chip ${g===ui.grp?'on':''}" data-a="grp" data-v="${g}">${g}</button>`).join('')}</div>
+<div class="chips">${slots.map(x=>`<button class="chip ${x.id===ui.slot?'on':''}" data-a="slot" data-v="${x.id}">${x.l}</button>`).join('')}</div>
+<div class="chips">${rooms().map(x=>{const m=db.santri.filter(s=>s.room===x),d=m.filter(s=>r[s.id]).length;return `<button class="chip ${x===ui.room?'on':''}" data-a="room" data-v="${esc(x)}">${esc(x)}<small>${d}/${m.length}${d===m.length&&m.length?' ✓':''}</small></button>`}).join('')}<button class="chip ${!ui.room?'on':''}" data-a="room" data-v="">Semua<small>${db.santri.filter(s=>r[s.id]).length}/${db.santri.length}</small></button></div>
+<button class="btn" data-a="allH" style="width:100%">Semua Hadir${ui.room?' · '+esc(ui.room):''}</button>
+<div class="sum">${ST.map(([k,l])=>`<div>${l}<b style="color:var(--${k})">${c[k]}</b></div>`).join('')}</div>
+<div class="mut">${f}/${L.length} santri terisi · tersimpan otomatis</div><div class="bar"><i style="width:${L.length?f/L.length*100:0}%"></i></div><div style="height:10px"></div>
+${L.map(s=>{const x=r[s.id];return `<div class="card"><div class="row sp"><div><button class="nm" data-a="prof" data-id="${s.id}">${esc(s.name)}</button><div class="mut">${esc(s.room||'')}</div>${fchips(flags(FW[s.id]))}</div></div>
+<div class="st">${ST.map(([k,l])=>`<button data-a="set" data-id="${s.id}" data-s="${k}" class="${x&&x.s===k?'on':''}">${l}</button>`).join('')}</div>
+${x&&x.s!=='H'?`<div class="extra">${x.s==='T'?[5,10,15,30].map(m=>`<button class="mn ${x.m===m?'on':''}" data-a="min" data-id="${s.id}" data-v="${m}">${m} mnt</button>`).join(''):''}<input data-note="${s.id}" placeholder="Catatan (opsional)" value="${esc(x.n||'')}"></div>`:''}</div>`}).join('')||'<div class="card mut">Belum ada santri. Tambahkan di tab Santri.</div>'}`}
+
+function rekap(){
+const sl=new Set(SL.filter(x=>x.g===ui.rg).map(x=>x.id));const t={};
+db.santri.forEach(s=>t[s.id]={H:0,T:0,I:0,S:0,A:0,m:0});
+Object.entries(db.rec).forEach(([k,v])=>{const[d,sid]=k.split('|');if(d<ui.from||d>ui.to||!sl.has(sid))return;for(const id in v)if(t[id]){t[id][v[id].s]++;t[id].m+=v[id].m||0}});
+const rows=db.santri.filter(s=>!ui.rrm||s.room===ui.rrm).map(s=>({s,...t[s.id]}));
+return `<h1>Rekap</h1>${attn()}<div class="card"><div class="row"><input type="date" id="rf" value="${ui.from}"><input type="date" id="rt" value="${ui.to}"></div></div>
+<div class="chips">${GR.map(g=>`<button class="chip ${g===ui.rg?'on':''}" data-a="rg" data-v="${g}">${g}</button>`).join('')}</div>
+<div class="chips"><button class="chip ${!ui.rrm?'on':''}" data-a="rrm" data-v="">Semua</button>${rooms().map(x=>`<button class="chip ${x===ui.rrm?'on':''}" data-a="rrm" data-v="${esc(x)}">${esc(x)}</button>`).join('')}</div>
+<div class="card tw"><table><tr><th>Nama</th>${ST.map(([k,l])=>`<th style="color:var(--${k})">${k}</th>`).join('')}<th>Mnt</th></tr>
+${rows.map(r=>`<tr><td><button class="nm" data-a="prof" data-id="${r.s.id}">${esc(r.s.name)}</button></td><td>${r.H}</td><td>${r.T}</td><td>${r.I}</td><td>${r.S}</td><td>${r.A}</td><td>${r.m}</td></tr>`).join('')}</table></div>
+<div class="mut" style="margin-bottom:8px">H=Hadir, T=Telat, I=Izin, S=Sakit, A=Alpa, Mnt=total menit telat</div>
+<button class="btn o" data-a="csv" style="width:100%">Salin rekap (CSV)</button>`}
+
+function santri(){return `<h1>Data Santri</h1><div class="mut" style="margin-bottom:8px">${rooms().map(x=>x+': '+db.santri.filter(s=>s.room===x).length).join(' · ')} · total ${db.santri.length}</div>
+<div class="card"><div class="name" style="margin-bottom:6px">Tambah santri</div><textarea id="ns" rows="4" placeholder="Satu baris satu santri:&#10;Nama, Kamar&#10;Contoh: Zaid Hamdan, Kamar 1"></textarea><button class="btn" data-a="add" style="width:100%;margin-top:8px">Tambahkan</button></div>
+${[...db.santri].sort((a,b)=>(a.room||'').localeCompare(b.room||'')).map(s=>`<div class="card row sp"><div><div class="name">${esc(s.name)}</div><div class="mut">${esc(s.room||'-')}</div></div><button class="ic" data-a="del" data-id="${s.id}" aria-label="Hapus">🗑</button></div>`).join('')}
+<button class="btn o" data-a="reset" style="width:100%">Hapus semua data absen</button>`}
+
+async function fetchAbs(uid,from,to){const out=[];for(let p=0;;p+=1000){const{data,error}=await sb.from('absensi').select('santri_id,tanggal,slot,status,menit,catatan').eq('musyrif_id',uid).gte('tanggal',from).lte('tanggal',to).order('tanggal').order('slot').order('santri_id').range(p,p+999);if(error)throw error;out.push(...data);if(data.length<1000)break}return out}
+const toRec=rows=>{const rec={};rows.forEach(r=>{const k=r.tanggal+'|'+r.slot;(rec[k]=rec[k]||{})[r.santri_id]={s:r.status,m:r.menit||0,n:r.catatan||''}});return rec};
+async function loadSet(uid,from){const[a,k]=await Promise.all([sb.from('santri').select('id,nama,kamar').eq('musyrif_id',uid).order('kamar').order('nama'),sb.from('konseling').select('*').eq('musyrif_id',uid).order('tanggal',{ascending:false})]);chk(a);
+const rows=await fetchAbs(uid,from,ds(now));
+return{santri:a.data.map(s=>({id:s.id,name:s.nama,room:s.kamar||''})),rec:toRec(rows),kon:(k.data||[]).map(x=>({id:x.id,sid:x.santri_id,tgl:x.tanggal,topik:x.topik,cat:x.catatan||'',tl:x.tindak_lanjut||'',tld:x.tanggal_tl||'',st:x.status,esk:x.eskalasi}))}}
+async function loadMus(){const{data,error}=await sb.from('profiles').select('id,nama').eq('role','musyrif').order('nama');if(error)throw error;ui.mus=data.map(p=>({id:p.id,name:p.nama||'Musyrif',me:false}))}
+async function ensureFrom(f){if(!sb||!f||f>=loadedFrom)return;try{const rows=await fetchAbs(view||me,f,addD(loadedFrom,-1)),r=toRec(rows);for(const k in r)db.rec[k]=Object.assign(db.rec[k]||{},r[k]);loadedFrom=f;if(!view)Object.assign(last.r,flatR(r))}catch(e){toast('Gagal memuat data lama')}}
+function loginView(msg){document.querySelector('nav').style.display='none';document.getElementById('app').innerHTML=`<div class="card" style="margin-top:10vh"><h1>Absen Musyrif</h1><div class="mut" style="margin-bottom:12px">Masuk dengan akun yang diberikan admin.</div><input id="em" type="email" placeholder="Email" autocomplete="username"><div style="height:8px"></div><input id="pw" type="password" placeholder="Kata sandi" autocomplete="current-password"><div style="height:12px"></div><button class="btn" data-a="login" style="width:100%">Masuk</button><div id="lerr" class="mut" style="margin-top:8px;color:var(--A)">${msg||''}</div></div>`}
+async function doLogin(){const el=document.getElementById('lerr'),em=document.getElementById('em').value.trim(),pw=document.getElementById('pw').value;if(!em||!pw){el.textContent='Isi email dan kata sandi.';return}el.textContent='Memproses…';const{data,error}=await sb.auth.signInWithPassword({email:em,password:pw});if(error){el.textContent='Email atau kata sandi salah.';return}await start(data.user)}
+async function doLogout(){try{await sb.auth.signOut()}catch(e){}location.reload()}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='pw')doLogin()});
+async function start(u){const A=document.getElementById('app');A.innerHTML='<div class="card mut">Memuat…</div>';document.querySelector('nav').style.display='';
+try{me=u.id;const{data:p,error}=await sb.from('profiles').select('nama,role').eq('id',me).single();if(error)throw error;
+role=p.role;myName=p.nama||u.email;isOwn=role==='admin';isPim=role==='pimpinan';isAdm=isOwn||isPim;cdb=true;
+if(isAdm){db={santri:[],rec:{},kon:[]};await loadMus();ui.tab='pengurus'}
+else{loadedFrom=addD(ds(now),-WIN);db=await loadSet(me,loadedFrom);last={s:flatS(),r:flatR(),k:flatK()}}
+ui.room=rooms()[0]||'';render();if(isAdm)loadSum()}
+catch(e){A.innerHTML='<div class="card"><div class="name">Gagal memuat data</div><div class="mut">'+esc(e.message||e)+'</div><button class="btn o" data-a="logout" style="margin-top:10px">Keluar</button></div>'}}
+async function boot(){if(!CFG.url||!CFG.key||CFG.url.includes('GANTI')){document.querySelector('nav').style.display='none';document.getElementById('app').innerHTML='<div class="card"><div class="name">Konfigurasi belum diisi</div><div class="mut">Isi url dan kunci anon di file config.js, lalu deploy ulang.</div></div>';return}
+sb=window.supabase.createClient(CFG.url,CFG.key,{auth:{persistSession:true,autoRefreshToken:true}});
+const{data:{session}}=await sb.auth.getSession();if(!session){loginView();return}await start(session.user)}
+async function see(uid,n){toast('Memuat…');try{clearTimeout(tm);const f=addD(ds(now),-WIN),d=await loadSet(uid,f);if(!mine)mine=db;db=d;view=uid;vname=n;loadedFrom=f;ui.prof=null;ui.kf=null;ui.room=rooms()[0]||'';ui.tab='rekap';render();window.scrollTo(0,0)}catch(e){toast('Gagal memuat')}}
+function back(){if(mine){db=mine;mine=null}view=null;ui.room=rooms()[0]||'';ui.tab='pengurus';ui.prof=null;render()}
+function banner(){const h=`<div class="row sp" style="margin-bottom:8px"><div class="mut">👤 ${esc(myName||'')} · ${esc(role)}</div><button class="nm" data-a="logout">Keluar</button></div>`;if(view)return h+`<div class="card" style="border-color:var(--T)"><div class="name">Melihat: ${esc(vname)}</div><div class="mut">Mode lihat saja</div><button class="btn o" data-a="back" style="margin-top:8px;width:100%">← Kembali ke daftar musyrif</button></div>`;return h}
+function pengurus(){return `<h1>Pengurus</h1><div class="mut" style="margin-bottom:8px">Musyrif yang sudah masuk. Ketuk Lihat untuk melihat absen dan rekap mereka (hanya lihat).</div>${(ui.mus||[]).map(m=>`<div class="card row sp"><div class="name">${esc(m.name)}${m.me?' (Anda)':''}</div><button class="btn o" data-a="see" data-id="${esc(m.id)}" data-n="${esc(m.name)}">Lihat</button></div>`).join('')||'<div class="card mut">Belum ada musyrif.</div>'}<button class="btn o" data-a="rmus" style="width:100%">Muat ulang daftar</button>`}
+const SM=Object.fromEntries(SL.map(x=>[x.id,x])),SN=Object.fromEntries(ST);
+function agg(from,to){const t={};for(const k in db.rec){const[d,sl]=k.split('|');if(d<from||d>to||!SM[sl])continue;const g=SM[sl].g,r=db.rec[k];for(const id in r){const x=r[id],o=t[id]||(t[id]={G:{},days:{},ev:[]}),q=o.G[g]||(o.G[g]={H:0,T:0,I:0,S:0,A:0,m:0});q[x.s]++;q.m+=x.m||0;if(x.s==='S')o.days[d]=1;if(x.s!=='H')o.ev.push({d,sl,s:x.s,m:x.m||0,n:x.n||''})}}return t}
+const sum=(o,gs)=>{const q={H:0,T:0,I:0,S:0,A:0,m:0};if(o)for(const g in o.G)if(!gs||gs.includes(g))for(const k in q)q[k]+=o.G[g][k];return q};
+const pct=q=>{const n=q.H+q.T+q.A;return n?Math.round((q.H+q.T)/n*100):null};
+function flags(o){const f=[];if(!o)return f;const q=sum(o);if(q.T>=3)f.push('Sering telat '+q.T+'×');if(q.A>=2)f.push('Alpa '+q.A+'×');const dk=Object.keys(o.days).sort();let run=1,mx=dk.length?1:0;for(let i=1;i<dk.length;i++){run=addD(dk[i-1],1)===dk[i]?run+1:1;mx=Math.max(mx,run)}if(mx>=3)f.push('Sakit '+mx+' hari berturut');return f}
+const fchips=f=>f.map(x=>`<span class='fl'>⚠ ${x}</span>`).join('');
+function attn(){const W=agg(addD(ds(now),-6),ds(now)),L=db.santri.map(s=>({s,f:flags(W[s.id])})).filter(x=>x.f.length);return `<div class='card'><div class='name'>Perlu perhatian · 7 hari terakhir</div>${L.length?L.map(x=>`<div style='margin-top:8px'><button class='nm' data-a='prof' data-id='${x.s.id}'>${esc(x.s.name)}</button> <span class='mut'>${esc(x.s.room||'')}</span><div>${fchips(x.f)}</div></div>`).join(''):'<div class="mut" style="margin-top:4px">Tidak ada santri yang perlu perhatian 👍</div>'}</div>`}
+function profil(){const s=db.santri.find(x=>x.id===ui.prof);if(!s){ui.prof=null;return ''}const P=ui.pp||30,T=ds(now),cur=agg(addD(T,-(P-1)),T)[s.id],prv=agg(addD(T,-(2*P-1)),addD(T,-P))[s.id],wk=agg(addD(T,-6),T)[s.id];const q=sum(cur),qp=sum(prv),pc=pct(q),bad=q.T+q.A,badp=qp.T+qp.A;const tr=(qp.H+qp.T+qp.A+qp.I+qp.S)===0?'Belum ada pembanding':bad<badp?'↗ Membaik':bad>badp?'↘ Menurun':'→ Stabil';const ev=((cur&&cur.ev)||[]).slice().sort((a,b)=>b.d.localeCompare(a.d)).slice(0,15);
+return `<button class='btn o' data-a='pback'>← Kembali</button><h1 style='margin-top:12px'>${esc(s.name)}</h1><div class='mut'>${esc(s.room||'')}</div><div style='margin:6px 0'>${fchips(flags(wk))}</div>
+<div class='chips'><button class='chip ${P===7?'on':''}' data-a='pp' data-v='7'>7 hari</button><button class='chip ${P===30?'on':''}' data-a='pp' data-v='30'>30 hari</button></div>
+<div class='card'><div class='row sp'><div><div class='mut'>Kehadiran (di luar izin/sakit)</div><div style='font-size:30px;font-weight:800'>${pc==null?'-':pc+'%'}</div></div><div style='text-align:right'><div class='mut'>Tren vs ${P} hari sebelumnya</div><div class='name'>${tr}</div></div></div><div class='sum' style='margin-top:10px'>${ST.map(([k,l])=>`<div>${l}<b style='color:var(--${k})'>${q[k]}</b></div>`).join('')}</div><div class='mut'>Total telat: ${q.m} menit</div></div>
+<div class='card tw'><table><tr><th>Kegiatan</th><th>Hadir %</th><th>T</th><th>A</th></tr>${GR.map(g=>{const x=sum(cur,[g]),p=pct(x);return `<tr><td>${g}</td><td>${p==null?'-':p+'%'}</td><td>${x.T}</td><td>${x.A}</td></tr>`}).join('')}</table></div>
+<div class='card'><div class='name'>Riwayat telat / tidak hadir</div>${ev.length?ev.map(e=>`<div style='padding:8px 0;border-bottom:1px solid var(--line)'><b style='color:var(--${e.s})'>${SN[e.s]}</b> · ${esc(SM[e.sl].l)} <span class='mut'>${e.d}${e.m?' · '+e.m+' mnt':''}</span>${e.n?`<div class='mut'>${esc(e.n)}</div>`:''}</div>`).join(''):'<div class="mut" style="margin-top:4px">Tidak ada.</div>'}</div>${konProf(s)}`}
+const KT=['Ibadah','Akhlak/Perilaku','Pertemanan','Akademik','Keluarga','Kesehatan/Emosi','Kedisiplinan','Lainnya'],KS=['Terbuka','Berjalan','Selesai'],kcol={Terbuka:'var(--T)',Berjalan:'var(--I)',Selesai:'var(--H)'};
+document.addEventListener('input',e=>{const t=e.target;if(t.dataset&&t.dataset.kf&&ui.kf)ui.kf[t.dataset.kf]=t.value});
+const kcard=(k,nm)=>{const s=db.santri.find(x=>x.id===k.sid),due=k.tld&&k.st!=='Selesai'&&k.tld<=ds(now);return `<div class='card' data-a='kedit' data-id='${k.id}' style='cursor:pointer'><div class='row sp'><div class='name'>${nm?esc(s?s.name:'(santri dihapus)'):esc(k.topik)}</div><span class='mut'>${k.tgl}</span></div><div>${nm?`<span class='fl' style='background:var(--bg);color:var(--I)'>${esc(k.topik)}</span>`:''}<span class='fl' style='background:var(--bg);color:${kcol[k.st]}'>${k.st}</span>${k.esk?`<span class='fl' style='color:var(--A)'>⚑ Pengurus</span>`:''}${due?`<span class='fl' style='color:var(--A)'>Jatuh tempo</span>`:''}</div><div style='margin-top:6px'>${esc(k.cat.slice(0,140))}${k.cat.length>140?'…':''}</div>${k.tl?`<div class='mut' style='margin-top:4px'>Tindak lanjut: ${esc(k.tl.slice(0,100))}${k.tld?' · '+k.tld:''}</div>`:''}</div>`};
+const konProf=s=>{const L=(db.kon||[]).filter(k=>k.sid===s.id).sort((a,b)=>b.tgl.localeCompare(a.tgl)).slice(0,5);return `<div class='card'><div class='row sp'><div class='name'>Bimbingan konseling</div><button class='btn' data-a='knew' data-id='${s.id}'>+ Catat</button></div><div class='mut' style='margin-top:4px'>${L.length?'Sesi terakhir:':'Belum ada catatan konseling.'}</div></div>${L.map(k=>kcard(k,false)).join('')}`};
+function konsel(){const T=ds(now),all=(db.kon||[]).slice().sort((a,b)=>b.tgl.localeCompare(a.tgl)),fl=ui.kfil||'Semua',F=['Semua',...KS,'⚑ Pengurus'],due=all.filter(k=>k.st!=='Selesai'&&k.tld&&k.tld<=T),L=all.filter(k=>fl==='Semua'||(fl==='⚑ Pengurus'?k.esk:k.st===fl));
+return `<h1>Bimbingan Konseling</h1><div class='mut' style='margin-bottom:8px'>🔒 Catatan ini hanya terlihat oleh Anda dan admin (pimpinan tidak bisa melihat).</div><button class='btn' data-a='knew' style='width:100%;margin-bottom:10px'>+ Catat konseling</button>
+${due.length?`<div class='card' style='border-color:var(--T)'><div class='name'>Tindak lanjut jatuh tempo (${due.length})</div>${due.map(k=>{const s=db.santri.find(x=>x.id===k.sid);return `<div style='margin-top:8px'><button class='nm' data-a='kedit' data-id='${k.id}'>${esc(s?s.name:'-')}</button> <span class='mut'>${esc(k.topik)} · ${k.tld}</span></div>`}).join('')}</div>`:''}
+<div class='chips'>${F.map(x=>`<button class='chip ${x===fl?'on':''}' data-a='kfil' data-v='${x}'>${x}</button>`).join('')}</div>${L.map(k=>kcard(k,true)).join('')||'<div class="card mut">Belum ada catatan.</div>'}`}
+function konForm(){const f=ui.kf,ss=[...db.santri].sort((a,b)=>(a.room||'').localeCompare(b.room||''));
+return `<h1>${f.id?'Ubah':'Catat'} Konseling</h1><div class='card'><div class='mut'>Santri</div><select data-kf='sid'><option value=''>— Pilih santri —</option>${ss.map(s=>`<option value='${s.id}' ${s.id===f.sid?'selected':''}>${esc(s.name)} · ${esc(s.room||'')}</option>`).join('')}</select>
+<div class='mut' style='margin-top:10px'>Tanggal</div><input type='date' data-kf='tgl' value='${f.tgl}'>
+<div class='mut' style='margin-top:10px'>Topik</div><div class='chips' style='flex-wrap:wrap;overflow:visible'>${KT.map(t=>`<button class='chip ${f.topik===t?'on':''}' data-a='ktopik' data-v='${t}'>${t}</button>`).join('')}</div>
+<div class='mut'>Catatan pembicaraan</div><textarea rows='4' data-kf='cat' placeholder='Apa yang disampaikan santri, kondisi, penyebabnya…'>${esc(f.cat)}</textarea>
+<div class='mut' style='margin-top:10px'>Tindak lanjut / rencana pembinaan</div><textarea rows='3' data-kf='tl' placeholder='Langkah yang disepakati…'>${esc(f.tl)}</textarea>
+<div class='mut' style='margin-top:10px'>Tanggal tindak lanjut (opsional)</div><input type='date' data-kf='tld' value='${f.tld||''}'>
+<div class='mut' style='margin-top:10px'>Status</div><div class='chips'>${KS.map(t=>`<button class='chip ${f.st===t?'on':''}' data-a='kst' data-v='${t}'>${t}</button>`).join('')}<button class='chip ${f.esk?'on':''}' data-a='kesk'>⚑ Perlu perhatian pengurus</button></div>
+<div class='row' style='margin-top:6px'><button class='btn o' data-a='kcancel' style='flex:1'>Batal</button><button class='btn' data-a='ksave' style='flex:2'>Simpan</button></div>${f.id?`<button class='btn o' data-a='kdel' style='width:100%;margin-top:8px;color:var(--A);border-color:var(--A)'>Hapus catatan</button>`:''}</div>`}
+function kact(a,id,v){if(a==='knew')ui.kf={sid:id||'',tgl:ds(now),topik:KT[0],cat:'',tl:'',tld:'',st:'Terbuka',esk:false};
+else if(a==='kedit'){const k=(db.kon||[]).find(x=>x.id===id);if(k)ui.kf={...k}}
+else if(a==='ktopik')ui.kf.topik=v;
+else if(a==='kst')ui.kf.st=v;
+else if(a==='kesk')ui.kf.esk=!ui.kf.esk;
+else if(a==='kcancel')ui.kf=null;
+else if(a==='kfil')ui.kfil=v;
+else if(a==='kdel'){if(!confirm('Hapus catatan konseling ini?'))return;db.kon=(db.kon||[]).filter(x=>x.id!==ui.kf.id);ui.kf=null;save();toast('Dihapus')}
+else if(a==='ksave'){const f=ui.kf;if(!f.sid){toast('Pilih santri dulu');return}if(!f.cat.trim()){toast('Isi catatan pembicaraan');return}db.kon=db.kon||[];if(f.id)db.kon=db.kon.map(x=>x.id===f.id?{...f}:x);else db.kon.push({...f,id:crypto.randomUUID()});save();ui.kf=null;toast('Konseling tersimpan')}
+render();window.scrollTo(0,0)}
+function setNav(){const sup=isAdm,vis={absen:!sup||!!view,rekap:!sup||!!view,santri:!sup||(!!view&&isOwn),kon:!sup||(!!view&&isOwn),pengurus:sup};document.querySelectorAll('nav button').forEach(b=>{b.style.display=vis[b.dataset.v]?'':'none';b.classList.toggle('on',b.dataset.v===ui.tab)})}
+async function summ(uid){const T=ds(now),[a,rows]=await Promise.all([sb.from('santri').select('id').eq('musyrif_id',uid),fetchAbs(uid,addD(T,-6),T)]);chk(a);const sv=db;db={santri:a.data,rec:toRec(rows),kon:[]};try{const td=agg(T,T),W=agg(addD(T,-6),T),o={n:db.santri.length,H:0,T:0,I:0,S:0,A:0,fl:0};for(const id in td){const q=sum(td[id]);for(const k of ['H','T','I','S','A'])o[k]+=q[k]}db.santri.forEach(s=>{if(flags(W[s.id]).length)o.fl++});return o}finally{db=sv}}
+async function loadSum(){ui.sum={};for(const m of ui.mus||[]){try{ui.sum[m.id]=await summ(m.id)}catch(e){ui.sum[m.id]={n:0,H:0,T:0,I:0,S:0,A:0,fl:0}}if(ui.tab==='pengurus'&&!view)render()}}
+function laporan(){const T=ds(now),S=ui.sum||{};return `<h1>Laporan Musyrif</h1><div class='mut' style='margin-bottom:8px'>${fmtD(T)} · ${isOwn?'Admin':'Pimpinan'} (hanya lihat)</div><button class='btn o' data-a='rmus' style='width:100%;margin-bottom:10px'>Muat ulang ringkasan</button>${(ui.mus||[]).map(m=>{const x=S[m.id];return `<div class='card'><div class='row sp'><div class='name'>${esc(m.name)}</div><button class='btn o' data-a='see' data-id='${esc(m.id)}' data-n='${esc(m.name)}'>Lihat</button></div>${x?`<div class='mut' style='margin-top:4px'>${x.n} santri · rekap hari ini</div><div class='sum' style='margin-top:6px'>${ST.map(([k,l])=>`<div>${l}<b style='color:var(--${k})'>${x[k]}</b></div>`).join('')}</div>${x.fl?`<span class='fl'>⚠ ${x.fl} santri perlu perhatian</span>`:''}`:'<div class="mut">Memuat…</div>'}</div>`}).join('')||'<div class="card mut">Belum ada musyrif yang masuk.</div>'}`}
+function render(){
+document.getElementById('app').innerHTML=banner()+(ui.kf?konForm():ui.prof?profil():ui.tab==='absen'?absen():ui.tab==='rekap'?rekap():ui.tab==='kon'?konsel():ui.tab==='pengurus'?laporan():santri());
+setNav()}
+
+document.addEventListener('click',e=>{
+const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,v=b.dataset.v,id=b.dataset.id;
+const y=window.scrollY;
+if(a==='login'){doLogin();return}
+if(a==='logout'){doLogout();return}
+if(a==='see'){see(id,b.dataset.n);return}
+if(a==='back'){back();return}
+if(a==='rmus'){loadMus().then(()=>{render();loadSum()});return}
+if(ro()&&['set','min','allH','add','del','reset','knew','ksave','kdel'].includes(a)){toast(view?'Mode lihat saja':'Akun ini hanya bisa melihat');return}
+if(a[0]==='k'){kact(a,id,v);return}
+if(a==='tab'){ui.tab=v;ui.prof=null;ui.kf=null}else if(a==='prof')ui.prof=id;else if(a==='pback')ui.prof=null;else if(a==='pp')ui.pp=+v;
+else if(a==='dd')ui.date=addD(ui.date,+v);
+else if(a==='grp'){ui.grp=v;const s=SL.filter(x=>x.g===v);const p=s.filter(x=>x.t<=hr);ui.slot=(p.length?p[p.length-1]:s[0]).id}
+else if(a==='slot')ui.slot=v;
+else if(a==='room')ui.room=v;
+else if(a==='rg')ui.rg=v;
+else if(a==='rrm')ui.rrm=v;
+else if(a==='allH'){const r=recs();list().forEach(s=>{if(!r[s.id])r[s.id]={s:'H'}});save();toast('Yang kosong diisi Hadir')}
+else if(a==='set'){const r=recs(),s=b.dataset.s;if(r[id]&&r[id].s===s)delete r[id];else r[id]={s,n:(r[id]||{}).n||''};save()}
+else if(a==='min'){const x=recs()[id];x.m=x.m===+v?0:+v;save()}
+else if(a==='add'){const t=document.getElementById('ns').value.split('\n').map(x=>x.trim()).filter(Boolean);t.forEach(l=>{const[n,k]=l.split(',').map(x=>x.trim());db.santri.push({id:crypto.randomUUID(),name:n,room:k||''})});save();toast(t.length+' santri ditambahkan')}
+else if(a==='del'){const s=db.santri.find(x=>x.id===id);if(confirm('Hapus '+s.name+'?')){db.santri=db.santri.filter(x=>x.id!==id);save()}}
+else if(a==='reset'){if(confirm('Hapus SEMUA data absen? Tidak bisa dibatalkan.')){db.rec={};save();toast('Data absen dihapus')}}
+else if(a==='csv'){const sl=new Set(SL.filter(x=>x.g===ui.rg).map(x=>x.id));const t={};db.santri.forEach(s=>t[s.id]={H:0,T:0,I:0,S:0,A:0,m:0});
+Object.entries(db.rec).forEach(([k,v])=>{const[d,sid]=k.split('|');if(d<ui.from||d>ui.to||!sl.has(sid))return;for(const i in v)if(t[i]){t[i][v[i].s]++;t[i].m+=v[i].m||0}});
+const csv='Nama,Kamar,Hadir,Telat,Izin,Sakit,Alpa,MenitTelat\n'+db.santri.map(s=>[s.name,s.room,t[s.id].H,t[s.id].T,t[s.id].I,t[s.id].S,t[s.id].A,t[s.id].m].join(',')).join('\n');
+try{navigator.clipboard.writeText(csv).then(()=>toast('CSV disalin, tempel ke Excel/Sheets'),()=>toast('Gagal menyalin'))}catch(x){toast('Gagal menyalin')}return}
+render();window.scrollTo(0,(a==='tab'||a==='prof')?0:y)});
+document.addEventListener('change',e=>{const t=e.target;
+if(t.id==='dt'&&t.value){ui.date=t.value;render()}
+else if(t.id==='rm'){ui.room=t.value;render()}
+else if(t.id==='rf'&&t.value){ui.from=t.value;render();ensureFrom(t.value).then(render)}
+else if(t.id==='rt'&&t.value){ui.to=t.value;render()}
+else if(t.dataset.note&&!ro()){const x=recs()[t.dataset.note];if(x){x.n=t.value;save()}}});
+boot();
+</script>
+<script>
+if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+  addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>
