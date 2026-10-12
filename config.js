@@ -4,6 +4,6 @@
 //   - anon / publishable key -> key   (AMAN dipublikasikan; data dilindungi aturan RLS)
 // JANGAN PERNAH memasukkan "service_role" key ke file ini.
 window.APP_CONFIG = {
-  url: 'https://GANTI-DENGAN-PROJECT-ID.supabase.co',
-  key: 'GANTI-DENGAN-ANON-KEY'
+  url: 'https://twozldqgewktfnmupiwn.supabase.co',
+  key: 'sb_publishable_GuSTBaquOJKU-tqQmDxKEw__0IaKRNT'
 };
